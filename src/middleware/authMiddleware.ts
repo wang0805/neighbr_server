@@ -19,6 +19,7 @@ declare global {
 
 //TLDR: if token is there, grab it into the req.user object and check their roles
 // They are then added to routes in index.ts
+// This middleware is used to protect routes and check user roles
 export const authMiddleware = (allowedRules: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     // token comes from api.ts on frontend where we set the authorization on headers
@@ -29,6 +30,7 @@ export const authMiddleware = (allowedRules: string[]) => {
       return;
     }
     try {
+      // decode the token to get the user id and role
       const decoded = jwt.decode(token) as DecodedToken;
       const userRole = decoded["custom:role"] || "";
       req.user = {
