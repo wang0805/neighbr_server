@@ -126,7 +126,12 @@ model Location {
   country     String
   postalCode  String
   coordinates Unsupported("geography(Point, 4326)")
-
+// 1 location can have multiple properties so need to create a properties relation
+// if we ever want to access location to properties in queries
+// i.e. const locationWithProps = await prisma.location.findUnique({
+//   where: { id: 1 },
+//   include: { properties: true },
+// });
   properties Property[]
 }
 
