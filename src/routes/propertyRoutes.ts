@@ -3,6 +3,7 @@ import {
   getProperties,
   getProperty,
   createProperty,
+  getLeasesByProperty,
 } from "../controllers/propertyControllers";
 import { authMiddleware } from "../middleware/authMiddleware";
 import multer from "multer";
@@ -20,6 +21,12 @@ router.post(
   authMiddleware(["manager"]),
   upload.array("photos"),
   createProperty
+);
+//added to see leases
+router.get(
+  "/:id/leases",
+  authMiddleware(["manager", "tenant"]),
+  getLeasesByProperty
 );
 
 export default router;

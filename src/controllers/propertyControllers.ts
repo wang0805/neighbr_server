@@ -299,3 +299,25 @@ export const createProperty = async (
       .json({ message: `Error creating property: ${err.message}` });
   }
 };
+
+//added to see leases because im using /proporties route so have to add here
+export const getLeasesByProperty = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const propertyId = Number(req.params.id);
+  try {
+    const leases = await prisma.lease.findMany({
+      where: { propertyId },
+      include: {
+        tenant: true,
+        property: true,
+      },
+    });
+    res.json(leases);
+  } catch (error: any) {
+    res.status(500).json({
+      message: `Error retrieving leases for property: ${propertyId} ${error.message}`,
+    });
+  }
+};
